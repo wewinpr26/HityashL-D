@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>כנס למידה ארגונית</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Heebo', sans-serif;
+            background-color: #f4f6f8; /* רקע אפרפר בהיר מאוד */
+            overflow-x: hidden; /* מונע גלילה אופקית לחלוטין */
+        }
+        
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.6);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+        }
+
+        .interactive-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: -1;
+            transition: background 0.2s ease-out;
+            background: radial-gradient(circle at 50% 50%, rgba(58, 96, 129, 0.08) 0%, rgba(122, 108, 150, 0.05) 50%, rgba(244, 246, 248, 1) 100%);
+        }
+
+        /* אנימציות רקע (הבועות) */
+        .blob {
+            position: absolute;
+            filter: blur(80px);
+            z-index: -2;
+            opacity: 0.4;
+            animation: float 15s infinite ease-in-out alternate;
+        }
+
+        @keyframes float {
+            0% { transform: translate(0, 0) scale(1); }
+            100% { transform: translate(30px, -50px) scale(1.1); }
+        }
+
+        /* מעברי אקורדיאון */
+        .accordion-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.5s ease;
+            opacity: 0;
+        }
+        
+        .accordion-content.open {
+            opacity: 1;
+        }
+
+        .accordion-icon {
+            transition: transform 0.3s ease;
+        }
+        
+        .accordion-button.active .accordion-icon {
+            transform: rotate(180deg);
+        }
+
+        /* עיצוב גרדיאנט לטקסט */
+        .text-gradient {
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-image: linear-gradient(to left, #3a6081, #7a6c96);
+        }
+    </style>
+</head>
+<body class="text-gray-800 antialiased min-h-screen relative w-full">
+
+    <!-- רקע אינטראקטיבי -->
+    <div class="interactive-bg" id="bg-layer"></div>
+    
+    <!-- בועות צבע ברקע -->
+    <div class="blob bg-[#3a6081] w-64 h-64 rounded-full top-20 right-10"></div>
+    <div class="blob bg-[#7a6c96] w-80 h-80 rounded-full bottom-20 left-10 animation-delay-2000"></div>
+
+    <div class="container mx-auto px-4 py-12 max-w-4xl relative z-10">
+        
+        <!-- כותרת ראשית ופסקת פתיחה -->
+        <header class="text-center mb-12">
+            <h2 class="text-sm md:text-base text-gray-500 font-semibold tracking-wide mb-3">
+                מינהל התיישבותי, פנימייתי ועליית הנוער
+            </h2>
+            <h1 class="text-4xl md:text-6xl font-extrabold mb-6 leading-tight pb-2">
+                <span class="text-gradient">כנס למידה ארגונית</span>
+                <span class="block text-2xl md:text-3xl text-[#3a6081] mt-2 font-bold">24-26.5 | ח'-י' בסיוון</span>
+            </h1>
+            
+            <div class="max-w-3xl mx-auto mt-8">
+                <!-- הפסקה ממורכזת מחדש (text-center) -->
+                <p class="text-lg text-gray-700 leading-relaxed glass-panel p-6 md:p-8 rounded-2xl text-center">
+                    ניהול הלמידה הארגונית מתחיל בתכנון מושכל וביכולת להתאים את הלמידה למציאות של בית הספר. אנו מזמינים אתכם, מנהלות, מנהלים וצוותים מובילים, לעצור לרגע, להתבונן ולדייק יחד את תהליכי הלמידה בארגון. במפגש נציג תפיסות מתקדמות לניהול למידה ואת התשתית המחוזית התומכת, במטרה לאפשר לכל הנהלה לעצב תוכנית למידה משפיעה, רלוונטית ומחוברת לחזון הבית-ספרי.
+                </p>
+            </div>
+        </header>
+
+        <!-- לו"ז ואקורדיאון -->
+        <section class="space-y-4" aria-label="לוח זמנים של הכנס">
+            
+            <!-- יום א' -->
+            <div class="glass-panel rounded-2xl overflow-hidden transition-all duration-300 hover:shadow-md">
+                <button class="accordion-button w-full text-right p-5 md:p-6 flex items-center justify-between focus:outline-none group" onclick="toggleAccordion(0)">
+                    
+                    <!-- סידור רספונסיבי: בשורה אחת במחשב עם רוחב קבוע למניעת שבירה, ובטלפון גמיש -->
+                    <div class="flex flex-col md:flex-row md:items-center w-full pr-2">
+                        <span class="font-bold text-xl md:text-lg text-[#3a6081] md:w-[70px] shrink-0 mb-1 md:mb-0">יום א'</span>
+                        <span class="hidden md:inline text-gray-300 mx-2 text-xl font-light">|</span>
+                        
+                        <span class="font-semibold text-gray-800 md:w-[280px] shrink-0 text-lg md:text-base mb-1 md:mb-0">
+                            תוכניות בית ספריות
+                        </span>
+                        <span class="hidden md:inline text-gray-300 mx-2 text-xl font-light">|</span>
+                        
+                        <span class="text-gray-500 text-sm md:text-base mt-1 md:mt-0">
+                            24 במאי, ח' בסיוון | 15:30-17:30
+                        </span>
+                    </div>
+
+                    <div class="mr-4 bg-[#f4f6f8] text-[#3a6081] rounded-full p-2 group-hover:bg-[#3a6081] group-hover:text-white transition-colors shrink-0">
+                        <svg class="accordion-icon w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                    </div>
+                </button>
+                
+                <div class="accordion-content bg-white/50 border-t border-gray-100">
+                    <div class="p-6 text-gray-700 text-sm md:text-base">
+                        <p class="mb-4 text-[#7a6c96] font-semibold bg-[#7a6c96]/10 inline-block px-3 py-1 rounded-full">
+                            מיועד ל: מנהלים (6 שנתיים, 4 שנתיים, חט"ב, חט"נ), סגני מנהלים, רכזים פדגוגיים
+                        </p>
+                        <ul class="space-y-3 mt-4">
+                            <li class="flex"><span class="font-bold w-14 shrink-0 text-[#3a6081]">15:30</span> <span>דברי פתיחה - דר׳ סער הראל, מנהל המינהל</span></li>
+                            <li class="flex"><span class="font-bold w-14 shrink-0 text-[#3a6081]">15:50</span> <span>ניהול הלמידה ארגונית כתפיסה - לידיה פרנק, מפקחת על הפיתוח המקצועי וההדרכה</span></li>
+                            <li class="flex"><span class="font-bold w-14 shrink-0 text-[#3a6081]">16:00</span> <span>למידה בתנועה בשוק עבודה כאוטי - רינתיה ברוכין לוין</span></li>
+                            <li class="flex"><span class="font-bold w-14 shrink-0 text-[#3a6081]">16:50</span> <span>מנווטים למידה ארגונית - שי פינצ'בסקי</span></li>
+                            <li class="flex flex-col mt-2">
+                                <div class="flex"><span class="font-bold w-14 shrink-0 text-[#3a6081]">17:00</span> <span class="font-bold">מושבים מקבילים לבחירה:</span></div>
+                                <div class="mr-14 mt-1 text-gray-600 leading-relaxed bg-white p-3 rounded-lg border border-gray-100 shadow-sm">
+                                    מרום ריסטארט | חטיבת הנעורים | תוכניות פיתוח מקצועי | השקפה | ייעוץ וליווי של פ"מ לבתי ספר + תומכי הוראה | קליטת מורים + חונכות למתמחים | ניהול ההון האנושי
+                                </div>
+                            </li>
+                            <li class="flex mt-2"><span class="font-bold w-14 shrink-0 text-[#3a6081]">17:30</span> <span>סיום</span></li>
+                        </ul>
+                        
+                        <div class="mt-8 text-center md:text-right">
+                            <a href="https://forms.gle/8LCkQetnCymdfLSN7" target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-center gap-2 bg-[#3a6081] hover:bg-[#2b4861] text-white font-semibold py-3 px-8 rounded-full shadow-md transition-transform hover:-translate-y-0.5">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg>
+                                הרשמה ליום א'
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- יום ב' -->
+            <div class="glass-panel rounded-2xl overflow-hidden transition-all duration-300 hover:shadow-md">
+                <button class="accordion-button w-full text-right p-5 md:p-6 flex items-center justify-between focus:outline-none group" onclick="toggleAccordion(1)">
+                    
+                    <div class="flex flex-col md:flex-row md:items-center w-full pr-2">
+                        <span class="font-bold text-xl md:text-lg text-[#3a6081] md:w-[70px] shrink-0 mb-1 md:mb-0">יום ב'</span>
+                        <span class="hidden md:inline text-gray-300 mx-2 text-xl font-light">|</span>
+                        
+                        <span class="font-semibold text-gray-800 md:w-[280px] shrink-0 text-lg md:text-base mb-1 md:mb-0">
+                            בעלי תפקידים
+                        </span>
+                        <span class="hidden md:inline text-gray-300 mx-2 text-xl font-light">|</span>
+                        
+                        <span class="text-gray-500 text-sm md:text-base mt-1 md:mt-0">
+                            25 במאי, ט' בסיוון | 15:30-17:15
+                        </span>
+                    </div>
+
+                    <div class="mr-4 bg-[#f4f6f8] text-[#3a6081] rounded-full p-2 group-hover:bg-[#3a6081] group-hover:text-white transition-colors shrink-0">
+                        <svg class="accordion-icon w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                    </div>
+                </button>
+                
+                <div class="accordion-content bg-white/50 border-t border-gray-100">
+                    <div class="p-6 text-gray-700 text-sm md:text-base">
+                        <p class="mb-4 text-[#7a6c96] font-semibold bg-[#7a6c96]/10 inline-block px-3 py-1 rounded-full">
+                            מיועד ל: מנהלים, סגנים, רכזים פדגוגיים, רכזי תחומים, רכזי שכבה, רכזי מתמטיקה
+                        </p>
+                        <ul class="space-y-3 mt-4">
+                            <li class="flex"><span class="font-bold w-14 shrink-0 text-[#3a6081]">15:30</span> <span>דברי פתיחה - שרית דור, מפקחת המחוז</span></li>
+                            <li class="flex"><span class="font-bold w-14 shrink-0 text-[#3a6081]">15:50</span> <span>מנווטים למידה ארגונית - שי פינצ'בסקי</span></li>
+                            <li class="flex flex-col mt-2">
+                                <div class="flex"><span class="font-bold w-14 shrink-0 text-[#3a6081]">16:00</span> <span class="font-bold">מושבים מקבילים לבחירה:</span></div>
+                                <div class="mr-14 mt-1 text-gray-600 leading-relaxed bg-white p-3 rounded-lg border border-gray-100 shadow-sm">
+                                    סגני מנהלים | חינוך כיתה | מחנכים בחמ"ד | ריכוז שכבה | ריכוז מקצוע | ריכוז פדגוגי | ריכוז מיומנויות | ריכוז התאמות | ריכוז הערכה ומדידה | חינוך מיוחד | ייעוץ חינוכי | חינוך חברתי | ילדים ונוער בסיכון | רכזי מתמטיקה
+                                </div>
+                            </li>
+                            <li class="flex mt-2"><span class="font-bold w-14 shrink-0 text-[#3a6081]">16:30</span> <span>מה בין ״מנהיגות״ ל-״ביניים״ במנהיגות הביניים - עופר פריאל</span></li>
+                            <li class="flex"><span class="font-bold w-14 shrink-0 text-[#3a6081]">17:15</span> <span>סיום</span></li>
+                        </ul>
+                        
+                        <div class="mt-8 text-center md:text-right">
+                            <a href="https://forms.gle/QcSY86kF36VcVpN69" target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-center gap-2 bg-[#3a6081] hover:bg-[#2b4861] text-white font-semibold py-3 px-8 rounded-full shadow-md transition-transform hover:-translate-y-0.5">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg>
+                                הרשמה ליום ב'
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- יום ג' -->
+            <div class="glass-panel rounded-2xl overflow-hidden transition-all duration-300 hover:shadow-md">
+                <button class="accordion-button w-full text-right p-5 md:p-6 flex items-center justify-between focus:outline-none group" onclick="toggleAccordion(2)">
+                    
+                    <div class="flex flex-col md:flex-row md:items-center w-full pr-2">
+                        <span class="font-bold text-xl md:text-lg text-[#3a6081] md:w-[70px] shrink-0 mb-1 md:mb-0">יום ג'</span>
+                        <span class="hidden md:inline text-gray-300 mx-2 text-xl font-light">|</span>
+                        
+                        <span class="font-semibold text-gray-800 md:w-[280px] shrink-0 text-lg md:text-base mb-1 md:mb-0">
+                            רכזות ורכזי מקצועות ותחומים
+                        </span>
+                        <span class="hidden md:inline text-gray-300 mx-2 text-xl font-light">|</span>
+                        
+                        <span class="text-gray-500 text-sm md:text-base mt-1 md:mt-0">
+                            26 במאי, י' בסיוון | 15:30-17:15
+                        </span>
+                    </div>
+
+                    <div class="mr-4 bg-[#f4f6f8] text-[#3a6081] rounded-full p-2 group-hover:bg-[#3a6081] group-hover:text-white transition-colors shrink-0">
+                        <svg class="accordion-icon w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                    </div>
+                </button>
+                
+                <div class="accordion-content bg-white/50 border-t border-gray-100">
+                    <div class="p-6 text-gray-700 text-sm md:text-base">
+                        <p class="mb-4 text-[#7a6c96] font-semibold bg-[#7a6c96]/10 inline-block px-3 py-1 rounded-full">
+                            מיועד ל: מנהלים, סגנים, רכזים פדגוגיים, רכזי מקצוע
+                        </p>
+                        <ul class="space-y-3 mt-4">
+                            <li class="flex"><span class="font-bold w-14 shrink-0 text-[#3a6081]">15:30</span> <span>ניהול הלמידה ארגונית כתפיסה - לידיה פרנק, מפקחת על הפיתוח המקצועי וההדרכה</span></li>
+                            <li class="flex"><span class="font-bold w-14 shrink-0 text-[#3a6081]">15:50</span> <span>Job carfting: עיצוב תפקיד - איילת שקולניק</span></li>
+                            <li class="flex"><span class="font-bold w-14 shrink-0 text-[#3a6081]">16:35</span> <span>מנווטים למידה ארגונית - שי פינצ'בסקי</span></li>
+                            <li class="flex flex-col mt-2">
+                                <div class="flex"><span class="font-bold w-14 shrink-0 text-[#3a6081]">16:45</span> <span class="font-bold">מושבים מקבילים לבחירה:</span></div>
+                                <div class="mr-14 mt-1 text-gray-600 leading-relaxed bg-white p-3 rounded-lg border border-gray-100 shadow-sm">
+                                    STEM | אנגלית | אל"ה-הכלה | זהירות ובטיחות בדרכים | מגמות טכנולוגיות | מדע וטכנולוגיה | עבודות גמר | עברית | עברית לחברה הערבית | קליטת עולים | תקשוב | תרבות יהודית-ישראלית
+                                </div>
+                            </li>
+                            <li class="flex mt-2"><span class="font-bold w-14 shrink-0 text-[#3a6081]">17:15</span> <span>סיום</span></li>
+                        </ul>
+                        
+                        <div class="mt-8 text-center md:text-right">
+                            <a href="https://forms.gle/tXKhhER55rdFXqop9" target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-center gap-2 bg-[#3a6081] hover:bg-[#2b4861] text-white font-semibold py-3 px-8 rounded-full shadow-md transition-transform hover:-translate-y-0.5">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg>
+                                הרשמה ליום ג'
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+        <!-- סיומת -->
+        <div class="mt-16 text-center">
+            <h3 class="text-3xl font-extrabold text-gradient inline-block">נתראה בכנס!</h3>
+        </div>
+
+    </div>
+
+    <!-- סקריפטים לאינטראקציה -->
+    <script>
+        // לוגיקת אקורדיאון
+        function toggleAccordion(index) {
+            const contents = document.querySelectorAll('.accordion-content');
+            const buttons = document.querySelectorAll('.accordion-button');
+            
+            const content = contents[index];
+            const button = buttons[index];
+            
+            const isOpen = content.classList.contains('open');
+            
+            // סגירת כל האחרים (אופציונלי, מאפשר רק יום אחד פתוח)
+            contents.forEach((c, i) => {
+                c.classList.remove('open');
+                c.style.maxHeight = null;
+                buttons[i].classList.remove('active');
+            });
+            
+            if (!isOpen) {
+                content.classList.add('open');
+                content.style.maxHeight = content.scrollHeight + "px";
+                button.classList.add('active');
+            }
+        }
+
+        // אפקט שינוי צבע עדין עם העכבר - הותאם לצבעים החדשים
+        document.addEventListener('mousemove', (e) => {
+            const x = Math.round((e.clientX / window.innerWidth) * 100);
+            const y = Math.round((e.clientY / window.innerHeight) * 100);
+            
+            // שימוש בצבעים החדשים (כחול אפרפר וסגול עדין)
+            const bgLayer = document.getElementById('bg-layer');
+            bgLayer.style.background = `radial-gradient(circle at ${x}% ${y}%, rgba(58, 96, 129, 0.1) 0%, rgba(122, 108, 150, 0.08) 40%, rgba(244, 246, 248, 1) 100%)`;
+        });
+    </script>
+</body>
+</html>
