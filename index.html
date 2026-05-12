@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>כנס למידה ארגונית 24-26.5</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Assistant:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        body {
+            font-family: 'Assistant', sans-serif;
+            background-color: #FFFEF7; /* צבע קרם/לבן חם */
+            overflow-x: hidden;
+            color: #333;
+        }
+
+        /* הרקע הדינמי שמגיב לעכבר */
+        #dynamic-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: -1;
+            /* הגרדיאנט משתמש במשתני CSS שמתעדכנים על ידי JS */
+            background: radial-gradient(circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(78, 205, 196, 0.12) 0%, rgba(255, 140, 66, 0.05) 40%, rgba(255, 254, 247, 1) 80%);
+            transition: background 0.1s ease;
+        }
+
+        /* בועות רקע עדינות */
+        .blob {
+            position: absolute;
+            filter: blur(80px);
+            z-index: -2;
+            opacity: 0.4;
+            animation: float 10s infinite ease-in-out alternate;
+        }
+        .blob-orange {
+            background: #FF8C42;
+            width: 300px;
+            height: 300px;
+            top: 10%;
+            right: -100px;
+            border-radius: 40% 60% 70% 30% / 40% 50% 60% 50%;
+        }
+        .blob-teal {
+            background: #4ECDC4;
+            width: 400px;
+            height: 400px;
+            bottom: -100px;
+            left: -150px;
+            border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%;
+            animation-delay: -5s;
+        }
+
+        @keyframes float {
+            0% { transform: translate(0, 0) rotate(0deg) scale(1); }
+            100% { transform: translate(30px, 50px) rotate(10deg) scale(1.1); }
+        }
+
+        /* סגנונות אקורדיאון */
+        .accordion-item {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            border-radius: 1.5rem;
+            margin-bottom: 1rem;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+        
+        .accordion-item:hover {
+            box-shadow: 0 6px 25px rgba(0, 0, 0, 0.06);
+            transform: translateY(-2px);
+        }
+
+        .accordion-header {
+            width: 100%;
+            text-align: right;
+            padding: 1.5rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            transition: background-color 0.3s ease;
+        }
+
+        .accordion-header:hover {
+            background-color: rgba(255, 255, 255, 0.9);
+        }
+
+        .accordion-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            padding: 0 1.5rem;
+        }
+
+        .accordion-icon {
+            transition: transform 0.4s ease;
+            width: 24px;
+            height: 24px;
+            color: #FF8C42;
+        }
+
+        /* לוח זמנים מפורט */
+        .schedule-row {
+            padding: 0.75rem 0;
+            border-bottom: 1px dashed rgba(0,0,0,0.05);
+        }
+        .schedule-row:last-child {
+            border-bottom: none;
+        }
+        .schedule-time {
+            font-weight: 700;
+            color: #4ECDC4;
+            min-width: 60px;
+            display: inline-block;
+        }
+
+        /* כפתור הרשמה */
+        .btn-register {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #FF8C42, #ff6b1a);
+            color: white;
+            font-weight: 600;
+            padding: 0.8rem 2rem;
+            border-radius: 9999px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(255, 140, 66, 0.3);
+            text-decoration: none;
+        }
+        .btn-register:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(255, 140, 66, 0.4);
+        }
+    </style>
+</head>
+<body>
+
+    <div id="dynamic-bg"></div>
+    <div class="blob blob-orange"></div>
+    <div class="blob blob-teal"></div>
+
+    <main class="max-w-4xl mx-auto px-4 py-12 md:py-20 relative z-10">
+        
+        <header class="text-center mb-16">
+            <h2 class="text-[#4ECDC4] font-semibold text-lg md:text-xl tracking-wide mb-3">מינהל התיישבותי, פנימייתי ועליית הנוער</h2>
+            <h1 class="text-4xl md:text-6xl font-extrabold mb-6 leading-tight pb-2">
+                <span class="text-transparent bg-clip-text bg-gradient-to-r from-[#FF8C42] to-[#4ECDC4]">כנס למידה ארגונית</span>
+                <span class="block text-2xl md:text-3xl text-[#FF8C42] mt-2 font-bold">24-26.5 | ח'-י' בסיוון</span>
+            </h1>
+            
+            <div class="max-w-3xl mx-auto mt-8">
+                <p class="text-lg text-gray-700 leading-relaxed bg-white/60 backdrop-blur-md p-6 md:p-8 rounded-2xl shadow-sm border border-white/50">
+                    הספר. אנו מזמינים אתכם, מנהלות, מנהלים וצוותים מובילים, לעצור לרגע, להתבונן ולדייק יחד את תהליכי הלמידה בארגון. במפגש נציג תפיסות מתקדמות לניהול למידה ואת התשתית המחוזית התומכת, במטרה לאפשר לכל הנהלה לעצב תוכנית למידה משפיעה, רלוונטית ומחוברת לחזון הבית-ספרי.
+                </p>
+            </div>
+        </header>
+
+        <section class="space-y-4" aria-label="לוח זמנים של הכנס">
+            
+            <!-- יום א' -->
+            <div class="accordion-item" id="day1">
+                <button class="accordion-header" aria-expanded="false" aria-controls="content-day1">
+                    <!-- הגדרת רשת (Grid) למחשב כדי שהקווים המפרידים יהיו ישרים אחד מתחת לשני בדיוק! -->
+                    <div class="flex-1 flex flex-col md:grid md:grid-cols-[80px_30px_360px_30px_1fr] md:items-center text-right gap-1 md:gap-0 pl-4">
+                        <span class="text-[#FF8C42] font-bold text-xl md:text-2xl">יום א'</span>
+                        <span class="hidden md:block text-center text-gray-300">|</span>
+                        <span class="font-bold text-gray-800 text-lg">תוכניות בית ספריות</span>
+                        <span class="hidden md:block text-center text-gray-300">|</span>
+                        <span class="text-sm md:text-base font-normal text-gray-500">25 במאי, ט' בסיוון • 15:30-17:15</span>
+                    </div>
+                    <svg class="accordion-icon flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                </button>
+                <div class="accordion-content" id="content-day1">
+                    <div class="pt-4 pb-6 border-t border-gray-100">
+                        <div class="mb-6 bg-[#4ECDC4]/10 p-4 rounded-xl border border-[#4ECDC4]/20">
+                            <span class="font-bold text-gray-800 block mb-1">מיועד ל:</span>
+                            <span class="text-gray-700">מנהלים (6 שנתיים, 4 שנתיים, חט"ב, חט"נ), סגני מנהלים, רכזים פדגוגיים</span>
+                        </div>
+                        
+                        <div class="space-y-1 mb-8 text-gray-700">
+                            <div class="schedule-row flex flex-col sm:flex-row sm:items-baseline gap-2">
+                                <span class="schedule-time">15:30</span>
+                                <span>דברי פתיחה - דר׳ סער הראל, מנהל המינהל</span>
+                            </div>
+                            <div class="schedule-row flex flex-col sm:flex-row sm:items-baseline gap-2">
+                                <span class="schedule-time">15:50</span>
+                                <span>ניהול הלמידה ארגונית כתפיסה - לידיה פרנק, מפקחת על הפיתוח המקצועי וההדרכה</span>
+                            </div>
+                            <div class="schedule-row flex flex-col sm:flex-row sm:items-baseline gap-2">
+                                <span class="schedule-time">16:00</span>
+                                <span>למידה בתנועה בשוק עבודה כאוטי - רינתיה ברוכין לוין</span>
+                            </div>
+                            <div class="schedule-row flex flex-col sm:flex-row sm:items-baseline gap-2">
+                                <span class="schedule-time">16:50</span>
+                                <span>מנווטים למידה ארגונית - שי פינצ'בסקי</span>
+                            </div>
+                            <div class="schedule-row flex flex-col sm:flex-row sm:items-start gap-2">
+                                <span class="schedule-time">17:00</span>
+                                <div>
+                                    <span class="font-bold block mb-1">מושבים מקבילים לבחירה</span>
+                                    <p class="text-sm text-gray-600 leading-relaxed">
+                                        מרום ריסטארט | חטיבת הנעורים | תוכניות פיתוח מקצועי | השקפה | ייעוץ וליווי של פ"מ לבתי ספר + תומכי הוראה | קליטת מורים + חונכות למתמחים | ניהול ההון האנושי
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="schedule-row flex flex-col sm:flex-row sm:items-baseline gap-2">
+                                <span class="schedule-time">17:30</span>
+                                <span>סיום</span>
+                            </div>
+                        </div>
+
+                        <div class="text-center mt-6">
+                            <a href="https://forms.gle/NJespLRdpK9pu88m7" target="_blank" class="btn-register w-full sm:w-auto">
+                                <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"></path></svg>
+                                הרשמה ליום א'
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- יום ב' -->
+            <div class="accordion-item" id="day2">
+                <button class="accordion-header" aria-expanded="false" aria-controls="content-day2">
+                    <div class="flex-1 flex flex-col md:grid md:grid-cols-[80px_30px_360px_30px_1fr] md:items-center text-right gap-1 md:gap-0 pl-4">
+                        <span class="text-[#4ECDC4] font-bold text-xl md:text-2xl">יום ב'</span>
+                        <span class="hidden md:block text-center text-gray-300">|</span>
+                        <span class="font-bold text-gray-800 text-lg">בעלי תפקידים</span>
+                        <span class="hidden md:block text-center text-gray-300">|</span>
+                        <span class="text-sm md:text-base font-normal text-gray-500">25 במאי, ט' בסיוון • 15:30-17:15</span>
+                    </div>
+                    <svg class="accordion-icon flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                </button>
+                <div class="accordion-content" id="content-day2">
+                    <div class="pt-4 pb-6 border-t border-gray-100">
+                        <div class="mb-6 bg-[#4ECDC4]/10 p-4 rounded-xl border border-[#4ECDC4]/20">
+                            <span class="font-bold text-gray-800 block mb-1">מיועד ל:</span>
+                            <span class="text-gray-700">מנהלים, סגנים, רכזים פדגוגיים, רכזי תחומים, רכזי שכבה, רכזי מתמטיקה</span>
+                        </div>
+                        
+                        <div class="space-y-1 mb-8 text-gray-700">
+                            <div class="schedule-row flex flex-col sm:flex-row sm:items-baseline gap-2">
+                                <span class="schedule-time">15:30</span>
+                                <span>דברי פתיחה - שרית דור, מפקחת המחוז</span>
+                            </div>
+                            <div class="schedule-row flex flex-col sm:flex-row sm:items-baseline gap-2">
+                                <span class="schedule-time">15:50</span>
+                                <span>מנווטים למידה ארגונית - שי פינצ'בסקי</span>
+                            </div>
+                            <div class="schedule-row flex flex-col sm:flex-row sm:items-start gap-2">
+                                <span class="schedule-time">16:00</span>
+                                <div>
+                                    <span class="font-bold block mb-1">מושבים מקבילים לבחירה</span>
+                                    <p class="text-sm text-gray-600 leading-relaxed">
+                                        סגני מנהלים | חינוך כיתה | מחנכים בחמ"ד | ריכוז שכבה | ריכוז מקצוע | ריכוז פדגוגי | ריכוז מיומנויות | ריכוז התאמות | ריכוז הערכה ומדידה | חינוך מיוחד | ייעוץ חינוכי | חינוך חברתי | ילדים ונוער בסיכון | רכזי מתמטיקה
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="schedule-row flex flex-col sm:flex-row sm:items-baseline gap-2">
+                                <span class="schedule-time">16:30</span>
+                                <span>מה בין ״מנהיגות״ ל-״ביניים״ במנהיגות הביניים - עופר פריאל</span>
+                            </div>
+                            <div class="schedule-row flex flex-col sm:flex-row sm:items-baseline gap-2">
+                                <span class="schedule-time">17:15</span>
+                                <span>סיום</span>
+                            </div>
+                        </div>
+
+                        <div class="text-center mt-6">
+                            <a href="https://forms.gle/NJespLRdpK9pu88m7" target="_blank" class="btn-register w-full sm:w-auto">
+                                <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"></path></svg>
+                                הרשמה ליום ב'
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- יום ג' -->
+            <div class="accordion-item" id="day3">
+                <button class="accordion-header" aria-expanded="false" aria-controls="content-day3">
+                    <div class="flex-1 flex flex-col md:grid md:grid-cols-[80px_30px_360px_30px_1fr] md:items-center text-right gap-1 md:gap-0 pl-4">
+                        <span class="text-[#FF8C42] font-bold text-xl md:text-2xl">יום ג'</span>
+                        <span class="hidden md:block text-center text-gray-300">|</span>
+                        <span class="font-bold text-gray-800 text-lg">רכזות ורכזי מקצועות ותחומים</span>
+                        <span class="hidden md:block text-center text-gray-300">|</span>
+                        <span class="text-sm md:text-base font-normal text-gray-500">26 במאי, י' בסיוון • 15:30-17:15</span>
+                    </div>
+                    <svg class="accordion-icon flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                </button>
+                <div class="accordion-content" id="content-day3">
+                    <div class="pt-4 pb-6 border-t border-gray-100">
+                        <div class="mb-6 bg-[#4ECDC4]/10 p-4 rounded-xl border border-[#4ECDC4]/20">
+                            <span class="font-bold text-gray-800 block mb-1">מיועד ל:</span>
+                            <span class="text-gray-700">מנהלים, סגנים, רכזים פדגוגיים, רכזי מקצוע</span>
+                        </div>
+                        
+                        <div class="space-y-1 mb-8 text-gray-700">
+                            <div class="schedule-row flex flex-col sm:flex-row sm:items-baseline gap-2">
+                                <span class="schedule-time">15:30</span>
+                                <span>ניהול הלמידה ארגונית כתפיסה - לידיה פרנק, מפקחת על הפיתוח המקצועי וההדרכה</span>
+                            </div>
+                            <div class="schedule-row flex flex-col sm:flex-row sm:items-baseline gap-2">
+                                <span class="schedule-time">15:50</span>
+                                <span>Job crafting: עיצוב תפקיד - איילת שקולניק</span>
+                            </div>
+                            <div class="schedule-row flex flex-col sm:flex-row sm:items-baseline gap-2">
+                                <span class="schedule-time">16:35</span>
+                                <span>מנווטים למידה ארגונית - שי פינצ'בסקי</span>
+                            </div>
+                            <div class="schedule-row flex flex-col sm:flex-row sm:items-start gap-2">
+                                <span class="schedule-time">16:45</span>
+                                <div>
+                                    <span class="font-bold block mb-1">מושבים מקבילים לבחירה</span>
+                                    <p class="text-sm text-gray-600 leading-relaxed">
+                                        STEM | אנגלית | אל"ה-הכלה | זהירות ובטיחות בדרכים | מגמות טכנולוגיות | מדע וטכנולוגיה | עבודות גמר | עברית | עברית לחברה הערבית | קליטת עולים | תקשוב | תרבות יהודית-ישראלית
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="schedule-row flex flex-col sm:flex-row sm:items-baseline gap-2">
+                                <span class="schedule-time">17:15</span>
+                                <span>סיום</span>
+                            </div>
+                        </div>
+
+                        <div class="text-center mt-6">
+                            <a href="https://forms.gle/NJespLRdpK9pu88m7" target="_blank" class="btn-register w-full sm:w-auto">
+                                <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"></path></svg>
+                                הרשמה ליום ג'
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </section>
+        
+        <div class="mt-20 mb-8 text-center">
+            <h3 class="text-4xl md:text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-[#FF8C42] to-[#4ECDC4] inline-block pb-2">
+                נתראה בכנס
+            </h3>
+        </div>
+        
+        <div class="pb-10"></div> <!-- Spacing at bottom -->
+    </main>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            // לוגיקה לאקורדיאון
+            const headers = document.querySelectorAll('.accordion-header');
+            
+            headers.forEach(header => {
+                header.addEventListener('click', () => {
+                    const content = header.nextElementSibling;
+                    const icon = header.querySelector('.accordion-icon');
+                    const isExpanded = header.getAttribute('aria-expanded') === 'true';
+                    
+                    // סגירת כל האחרים (אופציונלי, אפשר להסיר אם רוצים לאפשר פתיחה במקביל)
+                    document.querySelectorAll('.accordion-header').forEach(h => {
+                        h.setAttribute('aria-expanded', 'false');
+                        h.nextElementSibling.style.maxHeight = null;
+                        h.querySelector('.accordion-icon').style.transform = 'rotate(0deg)';
+                        // הסרת ריפוד מהתוכן כשהוא סגור כדי למנוע קפיצות
+                        h.nextElementSibling.style.paddingTop = '0px';
+                        h.nextElementSibling.style.paddingBottom = '0px';
+                    });
+
+                    // פתיחת הנוכחי במידה והיה סגור
+                    if (!isExpanded) {
+                        header.setAttribute('aria-expanded', 'true');
+                        // מוסיפים מעט ריפוד פנימי לתוכן
+                        content.style.paddingTop = '1rem';
+                        content.style.paddingBottom = '1.5rem';
+                        // משנים גובה לפי התוכן (כולל הריפוד החדש)
+                        content.style.maxHeight = content.scrollHeight + 40 + "px"; 
+                        icon.style.transform = 'rotate(180deg)';
+                    }
+                });
+            });
+
+            // אפקט פרלקס/שינוי צבע עדין עם העכבר - מעדכן משתני CSS
+            const bg = document.getElementById('dynamic-bg');
+            document.addEventListener('mousemove', (e) => {
+                // חישוב המיקום באחוזים
+                const x = (e.clientX / window.innerWidth) * 100;
+                const y = (e.clientY / window.innerHeight) * 100;
+                
+                // עדכון משתני ה-CSS שאחראים על מרכז הגרדיאנט
+                bg.style.setProperty('--mouse-x', `${x}%`);
+                bg.style.setProperty('--mouse-y', `${y}%`);
+            });
+        });
+    </script>
+</body>
+</html>
